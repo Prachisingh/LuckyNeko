@@ -41,18 +41,6 @@ public class GameConfiguration {
     public Map<String, SlotSymbolWaysPayConfig> payout = createPayout();
 
     public List<List<String[]>> reelSets = createReelSets();
-    public WeightedPrizeData reel1And2Sym = createReel1And2Sym();
-    public WeightedPrizeData reel3And4Sym = createRee3And4Sym();
-
-    public WeightedPrizeData reel5And6Sym = createRee5And6Sym();
-
-    public WeightedPrizeData reel1Fg = createReel1Fg();
-    public WeightedPrizeData reel2Fg = createReelSym2Fg();
-    public WeightedPrizeData reel3Fg = createReelSym3Fg();
-    public WeightedPrizeData reel4Fg = createReelSym4Fg();
-    public WeightedPrizeData reel5Fg = createReelSym5Fg();
-
-    public WeightedPrizeData reel6Fg = createReelSym6Fg();
     public WeightedPrizeData symHeight = getSymHeight();
 
 
@@ -228,21 +216,21 @@ public class GameConfiguration {
 
     public WeightedPrizeData getSymHeight() {
         return new WeightedPrizeData()
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{1,4}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{4,1}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{2,3}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{3,2}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{1,2,2}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{2,1,2}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{2,2,1}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{3,1,1}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{1,3,1}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{1,1,3}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{1,1,1,2}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{1,1,2,1}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{1,2,1,1}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{2,1,1,1}))
-                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(3, new int[]{1,1,1,1,1}));
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{1, 4}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{4, 1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{2, 3}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{3, 2}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{1, 2, 2}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{2, 1, 2}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{2, 2, 1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{3, 1, 1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{1, 3, 1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{1, 1, 3}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{1, 1, 1, 2}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{1, 1, 2, 1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{1, 2, 1, 1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{2, 1, 1, 1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(3, new int[]{1, 1, 1, 1, 1}));
 
     }
 }

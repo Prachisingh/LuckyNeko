@@ -14,9 +14,19 @@ public class Spin {
 
     public BigDecimal totalWin;
     public boolean isFsTriggered;
+    public int scatterCount;
     List<List<WinData>> cascadeList;
 
     private List<WinBand> winSummaryBands = new ArrayList<>();
+
+    public int getScatterCount() {
+        return scatterCount;
+    }
+
+    public void setScatterCount(int scatterCount) {
+        this.scatterCount = scatterCount;
+    }
+
     int fsAwarded;
 
     public int[] getSymSizes() {

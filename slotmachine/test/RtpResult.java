@@ -14,9 +14,28 @@ public class RtpResult {
 
     private BigDecimal highestWin = BigDecimal.ZERO;
     private int numOfTimesFsTriggered;
+    private int fourScatterHitCount;
+    private BigDecimal zeroScatterHitCount = BigDecimal.ZERO;
+
+    public BigDecimal getZeroScatterHitCount() {
+        return zeroScatterHitCount;
+    }
+
+    public void setZeroScatterHitCount(BigDecimal zeroScatterHitCount) {
+        this.zeroScatterHitCount = zeroScatterHitCount;
+    }
+
     private int totalRuns;
 
     private Map<String, OfAKindWins> winningMap = new HashMap<>();
+
+    public int getFourScatterHitCount() {
+        return fourScatterHitCount;
+    }
+
+    public void setFourScatterHitCount(int fourScatterHitCount) {
+        this.fourScatterHitCount = fourScatterHitCount;
+    }
 
     public void merge(RtpResult newRtpResult) {
         this.totalWins = this.totalWins.add(newRtpResult.getTotalWins());
@@ -26,6 +45,8 @@ public class RtpResult {
         this.highestWin = this.highestWin.add(newRtpResult.getHighestWin());
 
         this.numOfTimesFsTriggered += newRtpResult.getNumOfTimesFsTriggered();
+        this.fourScatterHitCount += newRtpResult.getFourScatterHitCount();
+        this.zeroScatterHitCount = this.zeroScatterHitCount.add(newRtpResult.getZeroScatterHitCount());
         this.totalRuns += newRtpResult.getTotalRuns();
 
 

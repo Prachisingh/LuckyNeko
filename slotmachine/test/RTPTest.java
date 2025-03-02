@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 
 public class RTPTest {
 
-    static int eachRun = 125000_0;
+    static int eachRun = 125000_00;
     static int finishedCount = 0;
     static long startingTime;
     static RtpResult rtpResult = new RtpResult();
@@ -46,6 +46,8 @@ public class RTPTest {
 
         BigDecimal highestWin = BigDecimal.ZERO;
         int numOfTimesFsTriggered = 0;
+        int fourScatterHitCount = 0;
+        BigDecimal zeroScatterHitCount = BigDecimal.ZERO;
         RtpResult rtpRe = new RtpResult();
 //        List<WinBand> winSummaryBands = getWinBands();
 //        long time = System.currentTimeMillis();
@@ -65,8 +67,14 @@ public class RTPTest {
                 Spin freeSpin = FreeSpins.playFreeSpins(rng, baseSpin.getFsAwarded(), gameConfiguration);
                 freeSpinWins = freeSpin.getTotalWin();
                  calculateOfAKindWins(freeSpin, winningMap);
-
+                 if(baseSpin.getScatterCount() == 4 ){
+                     fourScatterHitCount++;
+                 }
             }
+            if(baseSpin.getScatterCount() == 0 ){
+                zeroScatterHitCount = zeroScatterHitCount.add(BigDecimal.ONE);
+            }
+
             totalWins = totalWins.add(baseGameWin).add(freeSpinWins);
             currentWins = baseGameWin.add(freeSpinWins);
             totalFreeSpinsWins = totalFreeSpinsWins.add(freeSpinWins);
@@ -94,6 +102,8 @@ public class RTPTest {
         rtpResult.setHighestWinMultiplier(highestWinMultiplier);
         rtpResult.setHighestWin(highestWin);
         rtpResult.setNumOfTimesFsTriggered(numOfTimesFsTriggered);
+        rtpResult.setFourScatterHitCount(fourScatterHitCount);
+        rtpResult.setZeroScatterHitCount(zeroScatterHitCount);
         rtpResult.setTotalRuns(eachRun);
         rtpResult.setWinningMap(winningMap);
 
@@ -228,6 +238,8 @@ public class RTPTest {
         System.out.println("Highest win: " + rtpResult.getHighestWin());
         System.out.println("Highest win Multiplier: " + rtpResult.getHighestWinMultiplier());
         System.out.println("Number of times FreeSpins triggered " + rtpResult.getNumOfTimesFsTriggered());
+        System.out.println("4 scatter hit count " + rtpResult.getFourScatterHitCount());
+        System.out.println("0 scatter hit count " + rtpResult.getZeroScatterHitCount());
         System.out.println("Free Spin trigger frequency: " + (double) rtpResult.getNumOfTimesFsTriggered() / eachRun);
         System.out.println("Avg Spins to trigger free Spins : " + eachRun / rtpResult.getNumOfTimesFsTriggered());
         System.out.println("Free Spins Average pay: " + rtpResult.getTotalFreeSpinsWins().divide(BigDecimal.valueOf(rtpResult.getNumOfTimesFsTriggered()), new MathContext(4, RoundingMode.HALF_EVEN)));

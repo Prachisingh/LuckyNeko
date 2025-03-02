@@ -52,6 +52,7 @@ public class SlotMachine {
             int fsAwarded = 10 + ((scatterCount - 4) * 2);
             spin.setFsAwarded(fsAwarded);
             spin.setFsTriggered(true);
+            spin.setScatterCount(scatterCount);
         }
         spin.setTotalWin(totalWin);
 
