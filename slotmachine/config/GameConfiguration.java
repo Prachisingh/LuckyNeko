@@ -1,5 +1,6 @@
 package slotmachine.config;
 
+import slotmachine.dto.WeightedMultiplePrizeConfig;
 import slotmachine.dto.WeightedPrizeData;
 
 import java.math.BigDecimal;
@@ -10,7 +11,7 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 public class GameConfiguration {
-    public int boardHeight = 4;
+    public int boardHeight = 6;
     public final int boardWidth = 6;
     public final String AA = "AA";
     public final String BB = "BB";
@@ -52,6 +53,7 @@ public class GameConfiguration {
     public WeightedPrizeData reel5Fg = createReelSym5Fg();
 
     public WeightedPrizeData reel6Fg = createReelSym6Fg();
+    public WeightedPrizeData symHeight = getSymHeight();
 
 
     public Map createPayout() {
@@ -93,6 +95,7 @@ public class GameConfiguration {
                 GG, LL, LL, GG, FF, EE, MS, CC, JJ, LL, LL, JJ, JJ, MS, GG, SC, FF, DD, JJ, GG, LL, LL, HH, HH, MS, MS, GG, JJ, EE, KK, JJ, JJ, GG, DD, DD, KK, MS, FF, EE, GG, DD, LL, KK, KK, AA, BB, FF, JJ, GG, GG, KK, HH, EE, JJ, DD, GG, HH, MS, MS, BB, HH, GG, FF, HH, MS, DD, AA, AA, LL, GG, KK, HH, MS, LL, JJ, DD, GG, GG, JJ, DD, MS, EE, FF, MS, KK, FF, HH, HH, KK, BB, GG, KK, JJ, KK, EE, HH, CC, CC, LL, EE, KK, GG, HH, EE, JJ, JJ, MS, KK, JJ, GG, HH, KK, KK, LL, JJ, HH, CC, SC, HH, GG, HH, KK, MS, MS, FF, FF, EE, HH, GG, LL, EE, KK, FF, BB, HH, KK, MS, KK, AA, JJ, GG, EE, EE, HH, CC, DD, HH, KK, GG, DD, JJ, JJ, KK, GG, EE, EE, DD, GG, JJ, EE, BB, BB, HH, LL, LL, SC, HH, MS, LL, DD, HH, FF, HH, LL, LL, MS, KK, KK, JJ, GG, HH, AA, CC, KK, CC, CC, HH, MS, GG, JJ, MS, FF, SC, KK, GG, KK, LL, CC, JJ, LL, BB, HH, MS, JJ, JJ, HH, KK, KK, EE, JJ, CC, HH, FF, HH, MS, MS, LL, LL, AA, FF, HH, LL, EE, JJ, MS, HH, EE, EE, HH, FF, KK, JJ, LL, CC, LL, HH, LL, HH, WC, GG, FF, KK, KK, EE, JJ, CC, HH, KK, MS, MS, LL, HH, KK, CC, MS, FF, LL, LL, DD, KK, KK, JJ, JJ, EE, LL, KK, BB, HH, KK, JJ, EE, SC, LL, LL, GG, GG, KK, CC, LL, AA, EE, LL, KK, KK, SC, HH, HH, EE, KK, FF, EE, LL, GG, GG, JJ, JJ, GG, CC, JJ, KK, HH, DD, DD, MS, GG, MS, JJ, JJ, GG, WC, LL, GG, GG, KK, KK, SC, LL, LL, CC, GG, JJ, JJ, FF, KK, DD, DD, MS, MS, LL, HH, GG, HH, LL, DD, HH, MS, JJ, LL, JJ, GG, EE, JJ, HH, EE, KK, FF, FF, LL, EE, EE, KK, HH, CC, JJ, GG, EE, SC, HH, FF, JJ, GG, JJ, BB, KK, CC, CC, CC, WC, HH, JJ, KK, GG, CC, EE, LL, LL, LL, FF, KK, FF, HH, HH, KK, LL, JJ, EE, KK, SC, DD, DD, GG, JJ, LL, LL, BB, BB, EE, JJ, KK, LL, LL, DD, MS, MS, HH, GG, KK, MS, FF, HH, EE, EE, MS, LL, KK, HH, GG, EE, EE, SC, HH, EE, DD, KK, LL, AA, HH, JJ, GG, KK, KK, KK, SC, MS, MS, LL, LL, GG, FF, FF, JJ, GG, CC, KK, EE, GG, GG, GG, SC, CC, KK, JJ, CC, EE, HH, HH, HH, KK, JJ, FF, FF, CC, CC, CC, LL, KK, GG, GG, HH, FF, KK, JJ, HH, DD, DD, EE, KK, EE, EE, GG, KK, JJ, JJ, EE, HH, WC, GG, MS, MS, JJ, FF, HH, HH, JJ, GG, AA, FF, FF, SC, HH, HH, HH, KK, HH, KK, EE, EE, KK, HH, GG, KK, AA, HH, GG, CC, KK, LL, LL, SC, CC, HH, FF, FF, GG, GG, GG, JJ, HH, CC, FF,});
         bgReels.add(new String[]{
                 FF, FF, LL, LL, KK, JJ, HH, EE, DD, EE, KK, JJ, SC, CC, JJ, MS, MS, DD, KK, FF, HH, DD, HH, LL, EE, JJ, FF, KK, CC, JJ, HH, KK, KK, DD, DD, EE, HH, LL, CC, JJ, DD, KK, HH, JJ, BB, CC, GG, KK, MS, MS, JJ, HH, CC, GG, DD, KK, HH, KK, LL, AA, HH, BB, KK, CC, JJ, MS, DD, DD, KK, LL, DD, EE, EE, JJ, LL, DD, HH, MS, KK, BB, HH, CC, LL, MS, JJ, GG, HH, LL, CC, AA, FF, JJ, MS, LL, CC, HH, LL, SC, KK, KK, JJ, CC, HH, CC, KK, KK, DD, JJ, LL, FF, HH, JJ, CC, CC, LL, HH, LL, JJ, MS, SC, BB, JJ, FF, BB, KK, EE, CC, MS, FF, KK, KK, JJ, LL, LL, HH, CC, BB, KK, BB, MS, FF, CC, KK, LL, EE, DD, EE, HH, FF, LL, KK, KK, JJ, LL, CC, KK, DD, FF, KK, CC, LL, AA, DD, FF, BB, HH, HH, SC, KK, DD, JJ, MS, HH, LL, LL, JJ, JJ, MS, LL, HH, DD, DD, LL, JJ, EE, EE, LL, JJ, FF, KK, CC, LL, SC, KK, LL, JJ, CC, EE, KK, LL, LL, HH, KK, KK, LL, LL, AA, AA, CC, LL, EE, HH, GG, BB, FF, JJ, SC, GG, GG, FF, LL, FF, CC, KK, LL, HH, CC, CC, WC, GG, JJ, KK, KK, EE, HH, HH, LL, HH, LL, FF, GG, JJ, HH, CC, MS, EE, HH, FF, GG, FF, JJ, JJ, HH, LL, MS, HH, FF, FF, DD, JJ, GG, BB, KK, CC, LL, LL, AA, KK, JJ, KK, CC, BB, FF, MS, BB, MS, JJ, EE, HH, BB, LL, LL, MS, JJ, JJ, FF, HH, CC, DD, GG, CC, BB, FF, FF, CC, KK, FF, EE, KK, JJ, HH, DD, DD, JJ, FF, CC, KK, HH, FF, BB, GG, LL, SC, FF, FF, JJ, HH, LL, LL, FF, FF, CC, GG, JJ, DD, DD, KK, DD, KK, LL, FF, CC, LL, DD, HH, MS, KK, KK, MS, FF, CC, KK, KK, BB, LL, SC, GG, GG, FF, CC, JJ, HH, WC, KK, MS, CC, CC, LL, SC, KK, FF, HH, BB, JJ, LL, LL, EE, AA, HH, KK, MS, FF, EE, CC, MS, KK, KK, GG, GG, FF, HH, SC, HH, HH, KK, CC, JJ, DD, DD, GG, SC, FF, LL, LL, KK, AA, CC, LL, JJ, JJ, MS, DD, KK, HH, HH, EE, JJ, KK, LL, HH, CC, CC, MS, MS, JJ, HH, FF, CC, KK, JJ, HH, CC, DD, JJ, BB, BB, HH, KK, FF, LL, LL, JJ, JJ, GG, KK, DD, CC, FF, GG, GG, KK, FF, EE, JJ, CC, MS, MS, FF, FF, HH, JJ, KK, EE, CC, HH, HH, LL, JJ, KK, SC, LL, LL, EE, EE, WC, JJ, MS, MS, HH, GG, JJ, KK, HH, BB, LL, LL, SC, CC, CC, FF, JJ, GG, KK, CC, JJ, EE, LL, JJ, JJ, KK, GG, CC, HH, KK, FF, BB, GG, KK, HH, HH, LL, SC, JJ, HH, FF, CC, CC, JJ, HH, FF, BB, BB, HH, FF, MS, JJ, KK, HH, LL, EE, BB, SC, GG, FF, MS, MS, LL, LL, EE, GG,});
+
         List<String[]> topReel = new ArrayList<>(5);
         topReel.add(new String[]{
                 KK, CC, GG, GG, GG, GG, DD, HH, FF, LL, LL, LL, LL, KK, SC, JJ, CC, CC, KK, JJ, HH, LL, DD, KK, GG, EE, JJ, JJ, JJ, JJ, LL, LL, SC, BB, GG, JJ, MS, MS, HH, LL, KK, GG, FF, KK, HH, EE, DD, GG, LL, LL, KK, FF, LL, LL, KK, JJ, EE, AA, LL, JJ, JJ, JJ, JJ, GG, LL, JJ, CC, HH, KK, GG, JJ, DD, DD, HH, LL, LL, AA, HH, MS, MS, MS, MS, KK, GG, EE, JJ, KK, KK, KK, KK, GG, HH, EE, HH, JJ, DD, DD, DD, DD, FF, LL, WC, KK, GG, GG, DD, JJ, KK, LL, LL, GG, BB, KK, SC, JJ, KK, HH, JJ, FF, EE, WC, KK, JJ, KK, KK, JJ, BB, BB, BB, BB, GG, EE, LL, JJ, JJ, FF, FF, FF, FF, GG, HH, CC, CC, CC, CC, FF, EE, KK, KK, LL, LL, FF, KK, AA, EE, EE, EE, EE, JJ, DD, MS, JJ, FF, FF, HH, HH, FF, MS, MS, GG, EE, JJ, JJ, BB, BB, BB, BB, LL, CC, JJ, SC, KK, GG, FF, FF, HH, GG, WC, JJ, FF, KK, KK, HH, EE, GG, FF, KK, KK, KK, KK, JJ, MS, MS, HH, KK, GG, SC, FF, HH, DD, JJ, MS, BB, KK, GG, FF, LL, GG, EE, HH, KK, FF, HH, EE, JJ, WC, LL, KK, EE, DD, DD, DD, DD, FF, FF, HH, SC, HH, KK, EE, LL, LL, FF, HH, HH, BB, MS, MS, MS, MS, GG, LL, JJ, HH, JJ, SC, KK, CC, GG, EE, HH, HH, EE, KK, AA, JJ, JJ, JJ, JJ, FF, BB, EE, KK, EE, KK, GG, LL, LL, GG, CC, HH, JJ, SC, GG, KK, JJ, FF, GG, EE, KK, KK, JJ, JJ, FF, MS, KK, DD, HH, HH, CC, KK, CC, GG, KK, MS, HH, FF, MS, GG, EE, HH, MS, KK, LL, LL, JJ, SC, BB, KK, HH, LL, LL, LL, LL, MS, CC, LL, HH, WC, KK, FF, HH, CC, JJ, HH, JJ, SC, CC, MS, LL, LL, JJ, BB, GG, FF, AA, EE, KK, FF, GG, DD, DD, HH, KK, CC, FF, JJ, EE, BB, KK, JJ, BB, BB, BB, BB, KK, CC, JJ, HH, AA, KK, LL, LL, HH, JJ, HH, EE, JJ, KK, SC, JJ, EE, JJ, EE, EE, GG, CC, CC, EE, KK, HH, LL, LL, AA, FF, FF, HH, CC, CC, CC, CC, KK, JJ, JJ, SC, GG, HH, LL, MS, EE, CC, GG, MS, GG, JJ, KK, HH, HH, GG, JJ, FF, CC, CC, CC, CC, JJ, LL, KK, GG, MS, MS, MS, EE, HH, JJ, SC, KK, DD, EE, HH, MS, DD, MS, FF, EE, EE, EE, EE, JJ, AA, HH, DD, WC, JJ, LL, HH, KK, KK, EE, JJ, CC, SC, DD, BB, GG, GG, GG, GG, EE, LL, LL, JJ, BB, FF, FF, FF, FF, JJ, KK, GG, EE, SC, FF, JJ, DD, KK, EE, JJ, HH, LL, LL, JJ, HH, FF, BB, HH, HH, HH, HH, JJ, JJ, HH, JJ, SC, LL, FF, GG, CC, KK, FF, DD, JJ, KK, KK, KK, KK, JJ, AA, LL, LL, LL, LL, JJ, JJ, KK, HH, JJ, HH, EE, EE,});
@@ -221,5 +224,25 @@ public class GameConfiguration {
                 .addWeightedConfig(new WeightedPrizeConfig(14, 5))
                 .addWeightedConfig(new WeightedPrizeConfig(9, 6))
                 .addWeightedConfig(new WeightedPrizeConfig(6, 7));
+    }
+
+    public WeightedPrizeData getSymHeight() {
+        return new WeightedPrizeData()
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{1,4}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{4,1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{2,3}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(45, new int[]{3,2}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{1,2,2}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{2,1,2}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{2,2,1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{3,1,1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{1,3,1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(12, new int[]{1,1,3}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{1,1,1,2}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{1,1,2,1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{1,2,1,1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{2,1,1,1}))
+                .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(3, new int[]{1,1,1,1,1}));
+
     }
 }

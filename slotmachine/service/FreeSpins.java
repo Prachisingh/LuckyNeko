@@ -26,13 +26,13 @@ public class FreeSpins {
         Spin freeSpin = new Spin();
         BigDecimal totalWin = BigDecimal.ZERO;
         List<List<WinData>> cascadeList = new ArrayList<>();
-        for (int i = fsAwarded; i > 0; i--) {
+        for (int i = 1; i > 0; i--) {
 
 
             List<Integer> stopPosition = new ArrayList<>();
             List<String[]> slotFace = new ArrayList<>();
             List<String[]> freeSpinReels = gameConfiguration.reelSets.get(2);
-            SlotMachine.createGrid(rng, true, freeSpinReels, stopPosition, slotFace, gameConfiguration);
+            SlotMachine.createGrid(rng, true, freeSpinReels, stopPosition, slotFace, gameConfiguration, freeSpin);
             totalWin = cascade(1, slotFace, totalWin, stopPosition, cascadeList, freeSpin, true, gameConfiguration);
 
             if (getScatterCount(slotFace, gameConfiguration) >= 3) {

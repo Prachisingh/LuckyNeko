@@ -12,12 +12,23 @@ import java.util.List;
  */
 public class Spin {
 
-   public BigDecimal totalWin;
-   public boolean isFsTriggered;
+    public BigDecimal totalWin;
+    public boolean isFsTriggered;
     List<List<WinData>> cascadeList;
 
     private List<WinBand> winSummaryBands = new ArrayList<>();
-   int fsAwarded;
+    int fsAwarded;
+
+    public int[] getSymSizes() {
+        return symSizes;
+    }
+
+    public void setSymSizes(int[] symSizes) {
+        this.symSizes = symSizes;
+    }
+
+    int[] symSizes;
+
 
     public BigDecimal getTotalWin() {
         return totalWin;

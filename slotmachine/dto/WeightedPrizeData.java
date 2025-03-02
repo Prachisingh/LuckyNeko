@@ -10,9 +10,18 @@ public class WeightedPrizeData {
 
     // config with weight of 0 will be omitted automatically
     List<WeightedPrizeConfig> configs = new ArrayList<>();
+    List<WeightedMultiplePrizeConfig> multiplePrizeConfigs = new ArrayList<>();
 
     public WeightedPrizeData addWeightedConfig(WeightedPrizeConfig config) {
         this.configs.add(config);
+        config.setStartingRange(weightsSum);
+        this.weightsSum += config.getWeight();
+        config.setEndRange(weightsSum);
+        return this;
+    }
+
+    public WeightedPrizeData addWeightedConfigForMultiplePrize(WeightedMultiplePrizeConfig config) {
+        this.multiplePrizeConfigs.add(config);
         config.setStartingRange(weightsSum);
         this.weightsSum += config.getWeight();
         config.setEndRange(weightsSum);
@@ -56,6 +65,10 @@ public class WeightedPrizeData {
 
     public List<WeightedPrizeConfig> getConfigs() {
         return configs;
+    }
+
+    public List<WeightedMultiplePrizeConfig> getMultiplePrizeConfigs() {
+        return multiplePrizeConfigs;
     }
 
     public void setConfigs(List<WeightedPrizeConfig> configs) {
