@@ -17,7 +17,26 @@ public class Spin {
     public int scatterCount;
     List<List<WinData>> cascadeList;
 
+    List<int[]> symSizeGrid = new ArrayList<>();
+    List<String[]> silverSymMarker = new ArrayList<>();
+
     private List<WinBand> winSummaryBands = new ArrayList<>();
+
+    public List<String[]> getSilverSymMarker() {
+        return silverSymMarker;
+    }
+
+    public void setSilverSymMarker(List<String[]> silverSymMarker) {
+        this.silverSymMarker = silverSymMarker;
+    }
+
+    public List<int[]> getSymSizeGrid() {
+        return symSizeGrid;
+    }
+
+    public void setSymSizeGrid(List<int[]> symSizeGrid) {
+        this.symSizeGrid = symSizeGrid;
+    }
 
     public int getScatterCount() {
         return scatterCount;

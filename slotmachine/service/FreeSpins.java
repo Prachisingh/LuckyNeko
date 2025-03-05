@@ -33,7 +33,7 @@ public class FreeSpins {
             List<String[]> slotFace = new ArrayList<>();
             List<String[]> freeSpinReels = gameConfiguration.reelSets.get(2);
             SlotMachine.createGrid(rng, true, freeSpinReels, stopPosition, slotFace, gameConfiguration, freeSpin);
-            totalWin = cascade(1, slotFace, totalWin, stopPosition, cascadeList, freeSpin, true, gameConfiguration);
+            totalWin = cascade(1, slotFace, totalWin, stopPosition, cascadeList, freeSpin, true, gameConfiguration, rng);
 
             if (getScatterCount(slotFace, gameConfiguration) >= 3) {
                 i = i + 5;

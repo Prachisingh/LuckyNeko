@@ -3,20 +3,28 @@ package slotmachine.test;
 import slotmachine.config.GameConfiguration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class TestCode {
 
     public static void main(String[] args) {
-        List<String[]> slotFace = new ArrayList<>();
-        String[] col1 = new String[]{"1", "2", "3", "4", "14", "15"};
-        String[] col2 = new String[]{"5", "6", "7"}; // get size of it
-        String[] col3 = new String[]{"8", "9", "10", "11"};
-        slotFace.add(col1);
-        slotFace.add(col2);
-        slotFace.add(col3);
+//        List<String[]> slotFace = new ArrayList<>();
+//        String[] col1 = new String[]{"1", "2", "3", "4", "14", "15"};
+//        String[] col2 = new String[]{"5", "6", "7"}; // get size of it
+//        String[] col3 = new String[]{"8", "9", "10", "11"};
+//        slotFace.add(col1);
+//        slotFace.add(col2);
+//        slotFace.add(col3);
+//
+//        printSlotFace(slotFace);
 
-        printSlotFace(slotFace);
+        List<boolean[]> silverSymMarker = new ArrayList<>();
+
+        List<Boolean> list=new ArrayList<Boolean>(Arrays.asList(new Boolean[10]));
+        Collections.fill(list, Boolean.TRUE);
+        System.out.println();
 
     }
 

@@ -5,6 +5,7 @@ import slotmachine.dto.WeightedPrizeData;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,8 @@ public class GameConfiguration {
     public final String WC = "WC";
     public final String SCATTER = "SC";
     public final String MS = "MS";
+    public final Map<Integer, String> symbolMap = getSymbolMap();
+
 
     public int getBoardHeight() {
         return boardHeight;
@@ -42,6 +45,8 @@ public class GameConfiguration {
 
     public List<List<String[]>> reelSets = createReelSets();
     public WeightedPrizeData symHeight = getSymHeight();
+
+    public WeightedPrizeData silverSymReplacement = getSilverReplacement();
 
 
     public Map createPayout() {
@@ -232,5 +237,41 @@ public class GameConfiguration {
                 .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(6, new int[]{2, 1, 1, 1}))
                 .addWeightedConfigForMultiplePrize(new WeightedMultiplePrizeConfig(3, new int[]{1, 1, 1, 1, 1}));
 
+    }
+
+    public WeightedPrizeData getSilverReplacement() {
+        return new WeightedPrizeData()
+                .addWeightedConfig(new WeightedPrizeConfig(10, 2))
+                .addWeightedConfig(new WeightedPrizeConfig(10, 3))
+                .addWeightedConfig(new WeightedPrizeConfig(10, 4))
+                .addWeightedConfig(new WeightedPrizeConfig(10, 5))
+                .addWeightedConfig(new WeightedPrizeConfig(10, 6))
+                .addWeightedConfig(new WeightedPrizeConfig(10, 7))
+                .addWeightedConfig(new WeightedPrizeConfig(10, 8))
+                .addWeightedConfig(new WeightedPrizeConfig(10, 9))
+                .addWeightedConfig(new WeightedPrizeConfig(10, 10))
+                .addWeightedConfig(new WeightedPrizeConfig(10, 11))
+                .addWeightedConfig(new WeightedPrizeConfig(25, 12));
+    }
+
+    private Map<Integer, String> getSymbolMap() {
+        Map<Integer, String> symbolMap = new HashMap<>();
+
+        symbolMap.put(0, WC);
+        symbolMap.put(1, AA);
+        symbolMap.put(2, BB);
+        symbolMap.put(3, CC);
+        symbolMap.put(4, DD);
+        symbolMap.put(5, EE);
+        symbolMap.put(6, FF);
+        symbolMap.put(7, GG);
+        symbolMap.put(8, HH);
+        symbolMap.put(9, JJ);
+        symbolMap.put(10, KK);
+        symbolMap.put(11, LL);
+        symbolMap.put(12, MS);
+        symbolMap.put(13, SC);
+
+        return symbolMap;
     }
 }

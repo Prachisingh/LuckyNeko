@@ -241,7 +241,7 @@ public class RTPTest {
         System.out.println("4 scatter hit count " + rtpResult.getFourScatterHitCount());
         System.out.println("0 scatter hit count " + rtpResult.getZeroScatterHitCount());
         System.out.println("Free Spin trigger frequency: " + (double) rtpResult.getNumOfTimesFsTriggered() / eachRun);
-        System.out.println("Avg Spins to trigger free Spins : " + eachRun / rtpResult.getNumOfTimesFsTriggered());
+        System.out.println("Avg Spins to trigger free Spins : " + rtpResult.getTotalRuns() / rtpResult.getNumOfTimesFsTriggered());
         System.out.println("Free Spins Average pay: " + rtpResult.getTotalFreeSpinsWins().divide(BigDecimal.valueOf(rtpResult.getNumOfTimesFsTriggered()), new MathContext(4, RoundingMode.HALF_EVEN)));
         System.out.println();
         getPayDistributionForEachSymbol(rtpResult.getWinningMap(), totalStake);

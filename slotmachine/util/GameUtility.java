@@ -14,7 +14,7 @@ public class GameUtility {
         return reelLengthList;
     }
 
-    public static void printSlotFace(List<String[]> slotFace, GameConfiguration gameConfiguration) {
+    public static void printSlotFace(List<String[]> slotFace) {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 6; col++) {
                 if (slotFace.get(col).length <= row) {
