@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static slotmachine.util.GameUtility.printSlotFace;
+//import static slotmachine.util.GameUtility.//printSlotFace;
 
 
 /**
@@ -50,7 +50,7 @@ public class SlotMachine {
         //printSlotFace(slotFace);
 
         //System.out.println("Silver framed Symbol");
-//        printSlotFace(spin.getSilverSymMarker());
+        //printSlotFace(spin.getSilverSymMarker());
 
 
         List<List<WinData>> cascadeList = new ArrayList<>();
@@ -141,7 +141,12 @@ public class SlotMachine {
                                      Random rng) {
         List<WinData> winDataList;
         int cascadeCounter = 0;
+        int replacedMysterySymbolIndex =  WeightedPrizeService.getPrizes(rng, gameConfiguration.mysteryReplacement);
+        String replacedMysterySymbol = gameConfiguration.symbolMap.get(replacedMysterySymbolIndex);
+
         do {
+            replaceMysterySymbolInSlotFace(gameConfiguration, slotFace, replacedMysterySymbol);
+
             winDataList = calculateWin(slotFace, stake, gameConfiguration);
             totalWin = getTotalWin(winDataList, totalWin);
             if (!winDataList.isEmpty()) {
@@ -175,6 +180,25 @@ public class SlotMachine {
             spin.setCascadeList(cascadeList);
         } while (!winDataList.isEmpty());
         return totalWin;
+    }
+
+    private static void replaceMysterySymbolInSlotFace(GameConfiguration gameConfiguration, List<String[]> slotFace, String replacedMysterySymbol) {
+        int count = 0;
+        for (int col = 0; col < gameConfiguration.boardWidth; col++) {
+            for (int row = 0; row < slotFace.get(col).length; row++) {
+                String sym = slotFace.get(col)[row];
+                if (sym.contains(gameConfiguration.MYSTERY)) {
+                    count++;
+                    slotFace.get(col)[row] = replacedMysterySymbol;
+                    //System.out.println("MS Symbol Replaced with " + replacedMysterySymbol);
+                }
+            }
+        }
+        if(count > 0) {
+            //System.out.println("After MS symbol replace ");
+            //printSlotFace(slotFace);
+        }
+
     }
 
     private static void selectBGReelHeight(Random rng, int reelIdx, GameConfiguration gameConfiguration, Spin spin) {
@@ -342,7 +366,7 @@ public class SlotMachine {
                 else if (silverMarker.get(reel)[row].equals("gold")) {
                     //System.out.println("Gold symbol replacement");
                     //System.out.println("Gold replacement with wild at reel " + reel + " row " + row);
-                    // replace gold framed symbol with wild
+                    // replace gold framed symbol with wild and make it normal symbol -  no more frames
                     slotFace.get(reel)[row] = "WC";
                     silverMarker.get(reel)[row] = "normal";
                 } else {

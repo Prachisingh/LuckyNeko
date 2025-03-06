@@ -30,6 +30,8 @@ public class GameConfiguration {
     public final String WC = "WC";
     public final String SCATTER = "SC";
     public final String MS = "MS";
+
+    public final String MYSTERY = "MS";
     public final Map<Integer, String> symbolMap = getSymbolMap();
 
 
@@ -47,6 +49,8 @@ public class GameConfiguration {
     public WeightedPrizeData symHeight = getSymHeight();
 
     public WeightedPrizeData silverSymReplacement = getSilverReplacement();
+
+    public WeightedPrizeData mysteryReplacement = getMysteryReplacement();
 
 
     public Map createPayout() {
@@ -273,5 +277,19 @@ public class GameConfiguration {
         symbolMap.put(13, SC);
 
         return symbolMap;
+    }
+
+    public WeightedPrizeData getMysteryReplacement() {
+        return new WeightedPrizeData()
+                .addWeightedConfig(new WeightedPrizeConfig(6, 2))
+                .addWeightedConfig(new WeightedPrizeConfig(9, 3))
+                .addWeightedConfig(new WeightedPrizeConfig(12, 4))
+                .addWeightedConfig(new WeightedPrizeConfig(14, 5))
+                .addWeightedConfig(new WeightedPrizeConfig(14, 6))
+                .addWeightedConfig(new WeightedPrizeConfig(30, 7))
+                .addWeightedConfig(new WeightedPrizeConfig(30, 8))
+                .addWeightedConfig(new WeightedPrizeConfig(48, 9))
+                .addWeightedConfig(new WeightedPrizeConfig(48, 10))
+                .addWeightedConfig(new WeightedPrizeConfig(48, 11));
     }
 }
