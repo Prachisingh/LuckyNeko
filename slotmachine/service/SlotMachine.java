@@ -7,7 +7,6 @@ import slotmachine.util.GameUtility;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 //import static slotmachine.util.GameUtility.//printSlotFace;
 
@@ -44,14 +43,6 @@ public class SlotMachine {
         List<String[]> slotFace = new ArrayList<>();
 
         createGrid(rng, isFreeGame, bgReelsA, stopPosition, slotFace, gameConfiguration, spin);
-
-        //System.out.println("Stop Positions:" + stopPosition.stream().map(Object::toString).collect(Collectors.joining("-")));
-        //System.out.println("Screen:");
-        //printSlotFace(slotFace);
-
-        //System.out.println("Silver framed Symbol");
-        //printSlotFace(spin.getSilverSymMarker());
-
 
         List<List<WinData>> cascadeList = new ArrayList<>();
         int scatterCount;
@@ -103,9 +94,8 @@ public class SlotMachine {
 
     private static void markSymAsSilver(Spin spin) {
         Random random = new Random();
-        List<int[]> symbolSizes = spin.getSymSizeGrid();
+        List<int[]> symbolSizes = spin.getGridContainingSymbolSizes();
         List<String[]> silverSymMarker = new ArrayList<>();
-
 
 
         int silverIndex = 0;
@@ -141,40 +131,41 @@ public class SlotMachine {
                                      Random rng) {
         List<WinData> winDataList;
         int cascadeCounter = 0;
-        int replacedMysterySymbolIndex =  WeightedPrizeService.getPrizes(rng, gameConfiguration.mysteryReplacement);
+        int replacedMysterySymbolIndex = WeightedPrizeService.getPrizes(rng, gameConfiguration.mysteryReplacement);
         String replacedMysterySymbol = gameConfiguration.symbolMap.get(replacedMysterySymbolIndex);
+        List<String> latestSymbolLanded = new ArrayList<>();
+        int catSymNum = 0;
 
         do {
+            int catMultiplier;
+
+
             replaceMysterySymbolInSlotFace(gameConfiguration, slotFace, replacedMysterySymbol);
+            if (cascadeCounter == 0) {
+                catSymNum = getNumberOfCatSymbolsPresent(slotFace, gameConfiguration);
+            }
+
+            catMultiplier = catSymNum > 0 ? catSymNum * 2 : 1;
+
 
             winDataList = calculateWin(slotFace, stake, gameConfiguration);
-            totalWin = getTotalWin(winDataList, totalWin);
+            totalWin = getTotalWin(winDataList, totalWin, catMultiplier);
             if (!winDataList.isEmpty()) {
-                for (WinData win : winDataList) {
 
-                    //System.out.println("- Ways win " + win.getPosList().stream().map(Object::toString).collect(Collectors.joining("-")) + ", " + win.getSymbolName() + " X" + win.getSymCountOnEachCol().size() + ", " + win.getWinAmount() + ", Ways: " + win.getWays());
-                }
                 cascadeCounter++;
-                //System.out.println("Cascade: " + cascadeCounter);
                 removeSymFromWinPos(winDataList, slotFace, gameConfiguration, spin, rng);
-
-                //System.out.println("Screen after removing Winning Symbols");
-                //printSlotFace(slotFace);
-
                 shiftSymbolsDownwards(slotFace);
 
-                //System.out.println("Shifted Symbols ");
-
-
                 int numOfEmptySym = shiftTopReelLeftAndGetNumOfEmptySym(slotFace);
-                //printSlotFace(slotFace);
                 if (numOfEmptySym > 0) {
-                    fillTopReelEmptyPos(numOfEmptySym, slotFace, stopPosition, gameConfiguration);
+                    fillTopReelEmptyPos(numOfEmptySym, slotFace, stopPosition, gameConfiguration, latestSymbolLanded);
                 }
 
-                fillEmptyPosition(slotFace, stopPosition, isFreeGame, gameConfiguration);
+                fillEmptyPosition(slotFace, stopPosition, isFreeGame, gameConfiguration, latestSymbolLanded);
+                catSymNum = countNewCatSymbolOnCascade(latestSymbolLanded);
+                latestSymbolLanded.clear();
             } else {
-                //System.out.println("No more wins");
+//                System.out.println("No more wins");
             }
             cascadeList.add(winDataList);
             spin.setCascadeList(cascadeList);
@@ -182,21 +173,33 @@ public class SlotMachine {
         return totalWin;
     }
 
+    private static int countNewCatSymbolOnCascade(List<String> latestSymbolLanded) {
+        return (int) latestSymbolLanded.stream().filter(x -> x.equals("AA")).count();
+    }
+
+    private static int getNumberOfCatSymbolsPresent(List<String[]> slotFace, GameConfiguration gameConfiguration) {
+
+        int counter = 0;
+
+        for (int col = 0; col < gameConfiguration.boardWidth; col++) {
+            for (int row = 0; row < slotFace.get(col).length; row++) {
+                String sym = slotFace.get(col)[row];
+                if (sym.contains(gameConfiguration.AA)) {
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
+
     private static void replaceMysterySymbolInSlotFace(GameConfiguration gameConfiguration, List<String[]> slotFace, String replacedMysterySymbol) {
-        int count = 0;
         for (int col = 0; col < gameConfiguration.boardWidth; col++) {
             for (int row = 0; row < slotFace.get(col).length; row++) {
                 String sym = slotFace.get(col)[row];
                 if (sym.contains(gameConfiguration.MYSTERY)) {
-                    count++;
                     slotFace.get(col)[row] = replacedMysterySymbol;
-                    //System.out.println("MS Symbol Replaced with " + replacedMysterySymbol);
                 }
             }
-        }
-        if(count > 0) {
-            //System.out.println("After MS symbol replace ");
-            //printSlotFace(slotFace);
         }
 
     }
@@ -215,35 +218,28 @@ public class SlotMachine {
         gameConfiguration.setBoardHeight(boardHeight);
     }
 
-    private static void selectFsBoardHeight(Random rng, int reelIdx, GameConfiguration gameConfiguration) {
-        int boardHeight;
-        if (reelIdx == 1 || reelIdx == 6) {
-            boardHeight = 5;
-        } else {
-            int symSize[] = WeightedPrizeService.getMultiplePrizes(rng, gameConfiguration.symHeight);
-            boardHeight = symSize.length;
-        }
-        gameConfiguration.setBoardHeight(boardHeight);
-    }
-
-    private static BigDecimal getTotalWin(List<WinData> winDataList, BigDecimal totalWin) {
+    private static BigDecimal getTotalWin(List<WinData> winDataList, BigDecimal totalWin, int catMultiplier) {
+        BigDecimal cascadeWinAmount = BigDecimal.ZERO;
         for (WinData win : winDataList) {
             if (win.getWinAmount() != null) {
-                totalWin = totalWin.add(win.getWinAmount());
+                cascadeWinAmount = cascadeWinAmount.add(win.getWinAmount());
             }
         }
+        totalWin = totalWin.add(cascadeWinAmount.multiply(BigDecimal.valueOf(catMultiplier)));
         return totalWin;
     }
 
-    private static void fillTopReelEmptyPos(int numOfEmptySym, List<String[]> slotFace, List<Integer> stopPositions, GameConfiguration gameConfiguration) {
+    private static void fillTopReelEmptyPos(int numOfEmptySym, List<String[]> slotFace, List<Integer> stopPositions, GameConfiguration gameConfiguration, List<String> latestSymbolLanded) {
         String[] topReel = gameConfiguration.reelSets.get(1).getFirst();
 
         String[] topFaceReel = addElementsToTopReel(numOfEmptySym, topReel, stopPositions);
+
         int j = 0;
         for (int i = 1; i < 5; i++) {
 
             if (slotFace.get(i)[0].contains("-1")) {
                 slotFace.get(i)[0] = topFaceReel[j];
+                latestSymbolLanded.add(topFaceReel[j]);
                 j++;
             }
         }
@@ -293,7 +289,7 @@ public class SlotMachine {
         return topFaceReel;
     }
 
-    private static void fillEmptyPosition(List<String[]> slotFace, List<Integer> stopPositions, boolean isFreeGame, GameConfiguration gameConfiguration) {
+    private static void fillEmptyPosition(List<String[]> slotFace, List<Integer> stopPositions, boolean isFreeGame, GameConfiguration gameConfiguration, List<String> latestSymbolLanded) {
         List<String[]> reels;
         if (isFreeGame) {
             reels = gameConfiguration.reelSets.get(2);
@@ -311,14 +307,12 @@ public class SlotMachine {
                     stopPositions.set(reelIdx, stopPositions.get(reelIdx) % reelLengths.get(reelIdx));
 
                     reel[i] = reels.get(reelIdx)[stopPositions.get(reelIdx)];
+                    latestSymbolLanded.add(reel[i]);
                 }
             }
             reelIdx++;
         }
 
-        //System.out.println("Updated stop positions: " + stopPositions.stream().map(Object::toString).collect(Collectors.joining("-")));
-        //System.out.println("updated screen ");
-        //printSlotFace(slotFace);
     }
 
 
@@ -352,20 +346,15 @@ public class SlotMachine {
             for (Integer pos : win.getPosList()) {
                 int row = pos / gameConfiguration.boardWidth;
                 int reel = pos % gameConfiguration.boardWidth;
+                // silver marked symbols are not removed rather they are converted to random symbols
                 if (silverMarker.get(reel)[row].equals("silver")) {
-                    //System.out.println("Silver symbol replacement");
                     // replace silver framed symbol with new symbol
                     int silverReplacement = WeightedPrizeService.getPrizes(rng, gameConfiguration.silverSymReplacement);
-                    //System.out.println("silver replacement " + silverReplacement + " at reel " + reel + " row " + row);
                     slotFace.get(reel)[row] = gameConfiguration.symbolMap.get(silverReplacement);
                     //Now mark same symbol as gold
                     silverMarker.get(reel)[row] = "gold";
-                    //System.out.println("symbol marked as gold");
 
-                }
-                else if (silverMarker.get(reel)[row].equals("gold")) {
-                    //System.out.println("Gold symbol replacement");
-                    //System.out.println("Gold replacement with wild at reel " + reel + " row " + row);
+                } else if (silverMarker.get(reel)[row].equals("gold")) {
                     // replace gold framed symbol with wild and make it normal symbol -  no more frames
                     slotFace.get(reel)[row] = "WC";
                     silverMarker.get(reel)[row] = "normal";
@@ -384,10 +373,17 @@ public class SlotMachine {
         int counter = 0;
         for (int i = 1; i <= boardHeight; i++) {
             boardReel[i] = reel[(position + i - 1) % reel.length];
-            symSizeOnReel[i] = spin.getSymSizes()[counter];
+            // if symbol is scatter or wild, make its size as 1, so that it is not counted as silver symbol
+            if( boardReel[i].equals("WC") || boardReel[i].equals("SC")){
+                symSizeOnReel[i] = 1;
+            }
+            else {
+                symSizeOnReel[i] = spin.getSymSizes()[counter];
+            }
+
             counter++;
         }
-        spin.getSymSizeGrid().add(symSizeOnReel);
+        spin.getGridContainingSymbolSizes().add(symSizeOnReel);
         return boardReel;
     }
 

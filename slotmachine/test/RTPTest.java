@@ -20,11 +20,12 @@ public class RTPTest {
     static RtpResult rtpResult = new RtpResult();
     private static int finishedThreadCount = 0;
     static int availableThreads = Runtime.getRuntime().availableProcessors();
+    //    static int availableThreads = 1;
     static int stake = 1;
 
 
     public static void main(String[] args) throws InterruptedException {
-        int numOfAvailableThreads = Runtime.getRuntime().availableProcessors();
+        int numOfAvailableThreads = availableThreads;
         System.out.println("available number of threads =  " + numOfAvailableThreads);
         startingTime = System.currentTimeMillis();
 
@@ -66,12 +67,12 @@ public class RTPTest {
                 numOfTimesFsTriggered++;
                 Spin freeSpin = FreeSpins.playFreeSpins(rng, baseSpin.getFsAwarded(), gameConfiguration);
                 freeSpinWins = freeSpin.getTotalWin();
-                 calculateOfAKindWins(freeSpin, winningMap);
-                 if(baseSpin.getScatterCount() == 4 ){
-                     fourScatterHitCount++;
-                 }
+                calculateOfAKindWins(freeSpin, winningMap);
+                if (baseSpin.getScatterCount() == 4) {
+                    fourScatterHitCount++;
+                }
             }
-            if(baseSpin.getScatterCount() == 0 ){
+            if (baseSpin.getScatterCount() == 0) {
                 zeroScatterHitCount = zeroScatterHitCount.add(BigDecimal.ONE);
             }
 
@@ -216,7 +217,7 @@ public class RTPTest {
         if (finishedThreadCount == availableThreads) {
             long timeTaken = System.currentTimeMillis() - startingTime;
             System.out.println(timeTaken);
-            System.out.println("time taken : " + (timeTaken/1000) + " seconds");
+            System.out.println("time taken : " + (timeTaken / 1000) + " seconds");
             printData();
 
 
