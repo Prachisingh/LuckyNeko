@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import static slotmachine.service.SlotMachine.cascade;
+import static slotmachine.service.SlotMachine.checkForScatterSym;
 
 /**
  * Class handles free spins.
@@ -35,6 +36,12 @@ public class FreeSpins {
             List<String[]> freeSpinReels = gameConfiguration.reelSets.get(2);
             SlotMachine.createGrid(rng, true, freeSpinReels, stopPosition, slotFace, gameConfiguration, freeSpin);
             totalWin = cascade(1, slotFace, totalWin, stopPosition, cascadeList, freeSpin, true, gameConfiguration, rng); // TODO remove 1 as stake
+
+
+            int scatterCount = checkForScatterSym(slotFace, gameConfiguration);
+            if (scatterCount >= 4) {
+                i = i + (10 + ((scatterCount - 4) * 2));;
+            }
         }
         freeSpin.setTotalWin(totalWin);
         return freeSpin;

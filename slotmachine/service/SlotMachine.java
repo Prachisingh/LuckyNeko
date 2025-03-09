@@ -450,7 +450,7 @@ public class SlotMachine {
         return winDataList;
     }
 
-    private static int checkForScatterSym(List<String[]> slotFace, GameConfiguration gameConfiguration) {
+    public static int checkForScatterSym(List<String[]> slotFace, GameConfiguration gameConfiguration) {
         int counter = 0;
 
         for (int col = 0; col < gameConfiguration.boardWidth; col++) {
