@@ -57,6 +57,7 @@ public class GameConfiguration {
     public WeightedPrizeData silverSymReplacementInFs = getSilverReplacementInFreeSpins();
 
     public WeightedPrizeData mysteryReplacementInFs = getMysteryReplacementInFreeSpins();
+    public WeightedPrizeData silverSymbolProbabilityInFs = getSymbolSilverProbabilityInFs();
 
 
     public Map createPayout() {
@@ -254,5 +255,12 @@ public class GameConfiguration {
                 .addWeightedConfig(new WeightedPrizeConfig(40, 9))
                 .addWeightedConfig(new WeightedPrizeConfig(40, 10))
                 .addWeightedConfig(new WeightedPrizeConfig(40, 11));
+    }
+
+    public WeightedPrizeData getSymbolSilverProbabilityInFs() {
+        return new WeightedPrizeData()
+                .addWeightedConfig(new WeightedPrizeConfig(6, 1)) // given as 0.6 in maths
+                .addWeightedConfig(new WeightedPrizeConfig(4, 0))
+            ;
     }
 }

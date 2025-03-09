@@ -82,7 +82,7 @@ public class SlotMachine {
                 throw new RuntimeException("Board height can not be greater than 5");
             }
 
-            String[] slotFaceReel = selectReels(gameConfiguration.getBoardHeight(), reel, stopPos, spin, reelIdx);
+            String[] slotFaceReel = selectReels(gameConfiguration.getBoardHeight(), reel, stopPos, spin);
             stopPosition.add(stopPos);
             slotFace.add(slotFaceReel);
             reelIdx++;
@@ -90,16 +90,16 @@ public class SlotMachine {
         String[] topReel = getTopReel(rng, stopPosition, isFreeGame, gameConfiguration);
         slotFace.add(topReel);
         fillTopReel(slotFace, topReel);
-        markSymAsSilver(spin);
+        markSymAsSilver(spin, rng, isFreeGame, gameConfiguration);
     }
 
-    private static void markSymAsSilver(Spin spin) {
-        Random random = new Random(); // TODO, change it global member
+    private static void markSymAsSilver(Spin spin, Random rng, boolean isFreeGame, GameConfiguration gameConfiguration) {
         List<int[]> symbolSizes = spin.getGridContainingSymbolSizes();
         List<String[]> silverSymMarker = new ArrayList<>();
 
 
         int silverIndex = 0;
+        int chance;
         for (int[] array : symbolSizes) {
             String[] marker = new String[6];
             Arrays.fill(marker, "normal");
@@ -108,8 +108,13 @@ public class SlotMachine {
 
 
                 if (array[i] >= 2) {
-                    // TODO check for silver probability
-                    int chance = random.nextInt(2);
+                    // check for silver probability, could be either 1 or 0
+                    if(isFreeGame){
+                        chance = WeightedPrizeService.getPrizes(rng, gameConfiguration.getSymbolSilverProbabilityInFs());
+                    }
+                    else {
+                        chance = rng.nextInt(2);
+                    }
                     if (chance == 1) {
                         // set as silver
                         silverSymMarker.get(silverIndex)[i] = "silver";
@@ -144,13 +149,10 @@ public class SlotMachine {
 
         do {
             int catMultiplier;
-
-
             replaceMysterySymbolInSlotFace(gameConfiguration, slotFace, replacedMysterySymbol);
             if (cascadeCounter == 0) {
                 catSymNum = getNumberOfCatSymbolsPresent(slotFace, gameConfiguration);
             }
-
 
             if (isFreeGame) {
                 int catMultiplierInFs = spin.getFreeSpinsMultiplier() + catSymNum * 2;
@@ -224,7 +226,7 @@ public class SlotMachine {
             spin.setSymSizes(slotFaceSymbolLength);
             boardHeight = 5;
         } else {
-            int symSize[] = WeightedPrizeService.getMultiplePrizes(rng, symbolHeight);
+            int[] symSize = WeightedPrizeService.getMultiplePrizes(rng, symbolHeight);
             spin.setSymSizes(symSize);
             boardHeight = symSize.length;
         }
@@ -385,7 +387,7 @@ public class SlotMachine {
         }
     }
 
-    private static String[] selectReels(int boardHeight, String[] reel, int position, Spin spin, int reelIdx) {
+    private static String[] selectReels(int boardHeight, String[] reel, int position, Spin spin) {
         String[] boardReel = new String[boardHeight + 1];
         int[] symSizeOnReel = new int[boardHeight + 1];
         int counter = 0;
