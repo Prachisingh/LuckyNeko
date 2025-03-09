@@ -15,6 +15,16 @@ public class Spin {
     public BigDecimal totalWin;
     public boolean isFsTriggered;
     public int scatterCount;
+    public int freeSpinsMultiplier;
+
+    public int getFreeSpinsMultiplier() {
+        return freeSpinsMultiplier;
+    }
+
+    public void setFreeSpinsMultiplier(int freeSpinsMultiplier) {
+        this.freeSpinsMultiplier = freeSpinsMultiplier;
+    }
+
     List<List<WinData>> cascadeList;
 
     List<int[]> gridContainingSymbolSizes = new ArrayList<>();

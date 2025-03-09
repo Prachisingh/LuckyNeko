@@ -2,6 +2,7 @@ package slotmachine.service;
 
 import slotmachine.config.GameConfiguration;
 import slotmachine.config.SlotSymbolWaysPayConfig;
+import slotmachine.dto.WeightedPrizeData;
 import slotmachine.dto.WinData;
 import slotmachine.util.GameUtility;
 
@@ -73,9 +74,9 @@ public class SlotMachine {
             stopPos = rng.nextInt(reel.length); //
 
             if (isFreeGame) {
-                selectBGReelHeight(rng, reelIdx, gameConfiguration, spin);
+                selectGridHeight(rng, reelIdx, gameConfiguration, spin, gameConfiguration.symHeightInFs);
             } else {
-                selectBGReelHeight(rng, reelIdx, gameConfiguration, spin);
+                selectGridHeight(rng, reelIdx, gameConfiguration, spin, gameConfiguration.symHeightInBaseGame);
             }
             if (gameConfiguration.getBoardHeight() > 5) {
                 throw new RuntimeException("Board height can not be greater than 5");
@@ -93,7 +94,7 @@ public class SlotMachine {
     }
 
     private static void markSymAsSilver(Spin spin) {
-        Random random = new Random();
+        Random random = new Random(); // TODO, change it global member
         List<int[]> symbolSizes = spin.getGridContainingSymbolSizes();
         List<String[]> silverSymMarker = new ArrayList<>();
 
@@ -131,7 +132,12 @@ public class SlotMachine {
                                      Random rng) {
         List<WinData> winDataList;
         int cascadeCounter = 0;
-        int replacedMysterySymbolIndex = WeightedPrizeService.getPrizes(rng, gameConfiguration.mysteryReplacement);
+        int replacedMysterySymbolIndex;
+        if (isFreeGame) {
+            replacedMysterySymbolIndex = WeightedPrizeService.getPrizes(rng, gameConfiguration.mysteryReplacementInFs);
+        } else {
+            replacedMysterySymbolIndex = WeightedPrizeService.getPrizes(rng, gameConfiguration.mysteryReplacementInBaseGame);
+        }
         String replacedMysterySymbol = gameConfiguration.symbolMap.get(replacedMysterySymbolIndex);
         List<String> latestSymbolLanded = new ArrayList<>();
         int catSymNum = 0;
@@ -145,15 +151,22 @@ public class SlotMachine {
                 catSymNum = getNumberOfCatSymbolsPresent(slotFace, gameConfiguration);
             }
 
-            catMultiplier = catSymNum > 0 ? catSymNum * 2 : 1;
 
+            if (isFreeGame) {
+                int catMultiplierInFs = spin.getFreeSpinsMultiplier() + catSymNum * 2;
+                winDataList = calculateWin(slotFace, stake, gameConfiguration);
+                totalWin = getTotalWin(winDataList, totalWin, catMultiplierInFs);
+                spin.setFreeSpinsMultiplier(catMultiplierInFs);
+            } else { // when in base game
+                catMultiplier = catSymNum > 0 ? catSymNum * 2 : 1;
+                winDataList = calculateWin(slotFace, stake, gameConfiguration);
+                totalWin = getTotalWin(winDataList, totalWin, catMultiplier);
+            }
 
-            winDataList = calculateWin(slotFace, stake, gameConfiguration);
-            totalWin = getTotalWin(winDataList, totalWin, catMultiplier);
             if (!winDataList.isEmpty()) {
 
                 cascadeCounter++;
-                removeSymFromWinPos(winDataList, slotFace, gameConfiguration, spin, rng);
+                removeSymFromWinPos(winDataList, slotFace, gameConfiguration, spin, rng, isFreeGame);
                 shiftSymbolsDownwards(slotFace);
 
                 int numOfEmptySym = shiftTopReelLeftAndGetNumOfEmptySym(slotFace);
@@ -204,14 +217,14 @@ public class SlotMachine {
 
     }
 
-    private static void selectBGReelHeight(Random rng, int reelIdx, GameConfiguration gameConfiguration, Spin spin) {
+    private static void selectGridHeight(Random rng, int reelIdx, GameConfiguration gameConfiguration, Spin spin, WeightedPrizeData symbolHeight) {
         int boardHeight;
         int[] slotFaceSymbolLength = new int[]{1, 1, 1, 1, 1, 1};
         if (reelIdx == 1 || reelIdx == 6) {
             spin.setSymSizes(slotFaceSymbolLength);
             boardHeight = 5;
         } else {
-            int symSize[] = WeightedPrizeService.getMultiplePrizes(rng, gameConfiguration.symHeight);
+            int symSize[] = WeightedPrizeService.getMultiplePrizes(rng, symbolHeight);
             spin.setSymSizes(symSize);
             boardHeight = symSize.length;
         }
@@ -340,7 +353,7 @@ public class SlotMachine {
         }
     }
 
-    private static void removeSymFromWinPos(List<WinData> winDataList, List<String[]> slotFace, GameConfiguration gameConfiguration, Spin spin, Random rng) {
+    private static void removeSymFromWinPos(List<WinData> winDataList, List<String[]> slotFace, GameConfiguration gameConfiguration, Spin spin, Random rng, boolean isFreeGame) {
         List<String[]> silverMarker = spin.getSilverSymMarker();
         for (WinData win : winDataList) {
             for (Integer pos : win.getPosList()) {
@@ -349,7 +362,12 @@ public class SlotMachine {
                 // silver marked symbols are not removed rather they are converted to random symbols
                 if (silverMarker.get(reel)[row].equals("silver")) {
                     // replace silver framed symbol with new symbol
-                    int silverReplacement = WeightedPrizeService.getPrizes(rng, gameConfiguration.silverSymReplacement);
+                    int silverReplacement;
+                    if (isFreeGame) {
+                        silverReplacement = WeightedPrizeService.getPrizes(rng, gameConfiguration.silverSymReplacementInFs);
+                    } else {
+                        silverReplacement = WeightedPrizeService.getPrizes(rng, gameConfiguration.silverSymReplacementInBaseGame);
+                    }
                     slotFace.get(reel)[row] = gameConfiguration.symbolMap.get(silverReplacement);
                     //Now mark same symbol as gold
                     silverMarker.get(reel)[row] = "gold";
@@ -374,10 +392,9 @@ public class SlotMachine {
         for (int i = 1; i <= boardHeight; i++) {
             boardReel[i] = reel[(position + i - 1) % reel.length];
             // if symbol is scatter or wild, make its size as 1, so that it is not counted as silver symbol
-            if( boardReel[i].equals("WC") || boardReel[i].equals("SC")){
+            if (boardReel[i].equals("WC") || boardReel[i].equals("SC")) {
                 symSizeOnReel[i] = 1;
-            }
-            else {
+            } else {
                 symSizeOnReel[i] = spin.getSymSizes()[counter];
             }
 

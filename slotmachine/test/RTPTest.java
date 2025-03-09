@@ -20,7 +20,6 @@ public class RTPTest {
     static RtpResult rtpResult = new RtpResult();
     private static int finishedThreadCount = 0;
     static int availableThreads = Runtime.getRuntime().availableProcessors();
-    //    static int availableThreads = 1;
     static int stake = 1;
 
 
