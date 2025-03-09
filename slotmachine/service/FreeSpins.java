@@ -26,7 +26,7 @@ public class FreeSpins {
         Spin freeSpin = new Spin();
         BigDecimal totalWin = BigDecimal.ZERO;
         List<List<WinData>> cascadeList = new ArrayList<>();
-        for (int i = 1; i > 0; i--) {
+        for (int i = fsAwarded; i > 0; i--) {
 
 
             List<Integer> stopPosition = new ArrayList<>();
